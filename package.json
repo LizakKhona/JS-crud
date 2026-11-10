@@ -1,0 +1,33 @@
+{
+  "name": "js-crud",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "build": "parcel build index.html --public-url /JS-crud/",
+    "server": "npx json-server students.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LizakKhona/JS-crud.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LizakKhona/JS-crud/issues"
+  },
+  "homepage": "https://LizakKhona.github.io/JS-crud/",
+  "description": "",
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "parcel-bundler": "^1.12.5"
+  },
+  "dependencies": {
+    "json-server": "^1.0.0-beta.15",
+    "react": "^19.3.1"
+  }
+}
