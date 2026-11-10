@@ -1,0 +1,143 @@
+body {
+
+  font-family: Arial, sans-serif;
+
+  margin: 0;
+
+  padding: 0;
+
+  background-color: #f9f9f9;
+
+}
+
+.container {
+
+  max-width: 960px;
+
+  margin: 20px auto;
+
+  padding: 20px;
+
+  background: white;
+
+  border-radius: 8px;
+
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+}
+
+h1, h2 {
+
+  text-align: center;
+
+}
+
+table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  margin: 20px 0;
+
+}
+
+th, td {
+
+  border: 1px solid #ddd;
+
+  padding: 8px;
+
+  text-align: center;
+
+}
+
+th {
+
+  background-color: #f4f4f4;
+
+}
+
+button {
+
+  background-color: #007BFF;
+
+  color: white;
+
+  padding: 8px 12px;
+
+  border: none;
+
+  border-radius: 4px;
+
+  cursor: pointer;
+
+}
+
+button:hover {
+
+  background-color: #0056b3;
+
+}
+
+form {
+
+  margin-top: 20px;
+
+}
+
+form label {
+
+  display: block;
+
+  margin-bottom: 8px;
+
+}
+
+form input {
+
+  padding: 6px;
+
+  margin-bottom: 10px;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+}
+
+.updateBtn {
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+
+.deleteBtn {
+  margin-bottom: 10px;
+}
+
+
+.backdrop {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba(211, 211, 211, 0.722);
+  opacity: 1;
+}
+
+.modal {
+  width: 500px;
+  padding: 10px;
+  background-color: #fff;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+.backdrop.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*# sourceMappingURL=/styles.b61e60ae.css.map */
