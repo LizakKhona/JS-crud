@@ -121,7 +121,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 const BASE_URL = "http://localhost:3000/";
 let studentIdToUpdate;
 let studentId;
-getStudents().then(response => studentId = response.length);
+async function defaultStudentIdLength() {
+  try {
+    const array = await getStudents();
+    studentId = array.length;
+  } catch (error) {
+    console.log(error);
+  }
+}
+defaultStudentIdLength();
 const getStudentsBtn = document.getElementById("get-students-btn");
 const addStudentBtn = document.getElementById("add-student-btn");
 const tBody = document.querySelector("tbody");
@@ -132,8 +140,14 @@ const addStudentBtnModal = document.getElementById("add-student-btn-modal");
 
 // Функція для отримання всіх студентів
 
-function getStudents() {
-  return fetch(`${BASE_URL}students`).then(response => response.json());
+async function getStudents() {
+  try {
+    const response = await fetch(`${BASE_URL}students`);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Функція для відображення студентів у таблиці
@@ -160,9 +174,15 @@ function renderStudents(students) {
     deleteBtn.textContent = "Видалити";
     deleteBtn.classList.add("deleteBtn");
     deleteBtn.addEventListener("click", onDeleteBtn);
-    function onDeleteBtn(event) {
+    async function onDeleteBtn(event) {
       const id = event.currentTarget.parentNode.querySelector("td").textContent;
-      deleteStudent(id).then(() => getStudents().then(data => renderStudents(data)));
+      try {
+        const toDelete = await deleteStudent(id);
+        const data = await getStudents();
+        renderStudents(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
     tr.appendChild(updateBtn);
     tr.appendChild(deleteBtn);
@@ -173,7 +193,7 @@ function renderStudents(students) {
 
 // Функція для додавання нового студента
 
-function addStudent(e) {
+async function addStudent(e) {
   const options = {
     body: JSON.stringify(e),
     headers: {
@@ -181,12 +201,18 @@ function addStudent(e) {
     },
     method: "POST"
   };
-  return fetch(`${BASE_URL}students`, options).then(response => response.json());
+  try {
+    const response = await fetch(`${BASE_URL}students`, options);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Функція для оновлення студента
 
-function updateStudent(id, e) {
+async function updateStudent(id, e) {
   const options = {
     method: "PATCH",
     body: JSON.stringify(e),
@@ -194,23 +220,40 @@ function updateStudent(id, e) {
       "Content-Type": "application/json; charset=UTF-8"
     }
   };
-  return fetch(`${BASE_URL}students/${id}`, options).then(response => response.json());
+  try {
+    const response = await fetch(`${BASE_URL}students/${id}`, options);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Функція для видалення студента
 
-function deleteStudent(id) {
+async function deleteStudent(id) {
   const options = {
     method: "DELETE"
   };
-  return fetch(`${BASE_URL}students/${id}`, options).then(response => response.json());
+  try {
+    const response = await fetch(`${BASE_URL}students/${id}`, options);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 }
 getStudentsBtn.addEventListener("click", onGetStudentsBtn);
-function onGetStudentsBtn() {
-  getStudents().then(data => renderStudents(data));
+async function onGetStudentsBtn() {
+  try {
+    const response = await getStudents();
+    renderStudents(response);
+  } catch (error) {
+    console.log(error);
+  }
 }
 addStudentBtn.addEventListener("click", onAddStudentBtn);
-function onAddStudentBtn(event) {
+async function onAddStudentBtn(event) {
   event.preventDefault();
   studentIdToUpdate += 1;
   const student = {
@@ -222,12 +265,17 @@ function onAddStudentBtn(event) {
     email: document.querySelector("#email").value,
     isEnrolled: document.querySelector("#isEnrolled").checked
   };
-  addStudent(student).then(() => getStudents().then(data => renderStudents(data)));
+  try {
+    const add = await addStudent(student);
+    const data = await getStudents();
+    renderStudents(data);
+  } catch (error) {
+    console.log(error);
+  }
 }
 addStudentBtnModal.addEventListener("click", onAddStudentBtnModal);
-function onAddStudentBtnModal(event) {
+async function onAddStudentBtnModal(event) {
   event.preventDefault();
-  console.log(studentId);
   const student = {
     id: String(studentId += 1),
     name: document.querySelector("#name-modal").value,
@@ -237,7 +285,13 @@ function onAddStudentBtnModal(event) {
     email: document.querySelector("#email-modal").value,
     isEnrolled: document.querySelector("#isEnrolled-modal").checked
   };
-  updateStudent(studentIdToUpdate, student).then(() => getStudents().then(data => renderStudents(data)));
+  try {
+    const update = await updateStudent(studentIdToUpdate, student);
+    const data = await getStudents();
+    renderStudents(data);
+  } catch (error) {
+    console.log(error);
+  }
   backdrop.classList.toggle("is-hidden");
 }
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -265,7 +319,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54876" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65078" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
