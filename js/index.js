@@ -2,7 +2,16 @@ const BASE_URL = "http://localhost:3000/";
 
 let studentIdToUpdate;
 let studentId;
-getStudents().then((response) => studentId = response.length);
+async function defaultStudentIdLength() {
+  try {
+    const array = await getStudents()
+    studentId = array.length;
+  } catch (error) {
+    console.log(error);
+  }
+}
+defaultStudentIdLength()
+
 
 
 const getStudentsBtn = document.getElementById("get-students-btn");
@@ -16,8 +25,14 @@ const addStudentBtnModal = document.getElementById("add-student-btn-modal");
 
 // Функція для отримання всіх студентів
 
-function getStudents() {
-  return fetch(`${BASE_URL}students`).then(response => response.json())
+async function getStudents() {
+  try {
+    const response = await fetch(`${BASE_URL}students`)
+    const result = await response.json();
+    return result
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
@@ -54,9 +69,15 @@ function renderStudents(students) {
 
       deleteBtn.addEventListener("click", onDeleteBtn);
 
-      function onDeleteBtn(event) {
+      async function onDeleteBtn(event) {
         const id = event.currentTarget.parentNode.querySelector("td").textContent;
-        deleteStudent(id).then(() => getStudents().then((data) => renderStudents(data)))
+        try {
+          const toDelete = await deleteStudent(id)
+          const data = await getStudents()
+          renderStudents(data)
+        } catch(error) {
+          console.log(error);
+        }
       }
 
 
@@ -72,21 +93,28 @@ function renderStudents(students) {
 
 // Функція для додавання нового студента
 
-function addStudent(e) {  
+async function addStudent(e) {  
   const options = {
     body: JSON.stringify(e),
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
     },
-    method: "POST"
+    method: "POST",
   };
-  return fetch(`${BASE_URL}students`, options).then(response => response.json())
+
+  try {
+    const response = await fetch(`${BASE_URL}students`, options)
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
 // Функція для оновлення студента
 
-function updateStudent(id, e) {
+async function updateStudent(id, e) {
   const options = {
     method: "PATCH",
     body: JSON.stringify(e),
@@ -95,29 +123,47 @@ function updateStudent(id, e) {
     },
   };
 
-  return fetch(`${BASE_URL}students/${id}`, options).then(response => response.json())
+  try {
+    const response = await fetch(`${BASE_URL}students/${id}`, options)
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Функція для видалення студента
 
-function deleteStudent(id) {
+async function deleteStudent(id) {
   const options = {
     method: "DELETE",
+  }  
+
+  try {
+    const response = await fetch(`${BASE_URL}students/${id}`, options)
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.log(error);
   }
-  return fetch(`${BASE_URL}students/${id}`, options).then(response => response.json())
 }
 
 
 getStudentsBtn.addEventListener("click", onGetStudentsBtn)
 
-function onGetStudentsBtn() {
-  getStudents().then((data) => renderStudents(data));
+async function onGetStudentsBtn() {
+  try {
+    const response = await getStudents()
+    renderStudents(response);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
 addStudentBtn.addEventListener("click", onAddStudentBtn);
 
-function onAddStudentBtn(event) {
+async function onAddStudentBtn(event) {
   event.preventDefault();
   studentIdToUpdate += 1
   
@@ -130,17 +176,21 @@ function onAddStudentBtn(event) {
       email: document.querySelector("#email").value,
       isEnrolled: document.querySelector("#isEnrolled").checked,
   };
-  
-  addStudent(student).then(() => getStudents().then((data) => renderStudents(data)))
+
+  try {
+  const add = await addStudent(student);
+  const data = await getStudents();
+  renderStudents(data);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
 addStudentBtnModal.addEventListener("click", onAddStudentBtnModal);
 
-function onAddStudentBtnModal(event) {
-  event.preventDefault();
-  console.log(studentId);
-  
+async function onAddStudentBtnModal(event) {
+  event.preventDefault();  
 
   const student = {
     id: String((studentId += 1)),
@@ -152,8 +202,14 @@ function onAddStudentBtnModal(event) {
     isEnrolled: document.querySelector("#isEnrolled-modal").checked,
   };
   
-  updateStudent(studentIdToUpdate, student).then(() =>
-    getStudents().then((data) => renderStudents(data)),
-  );
+  
+  try {
+    const update = await updateStudent(studentIdToUpdate, student);
+    const data = await getStudents()
+    renderStudents(data);
+  } catch (error) {
+    console.log(error);
+  }
+
   backdrop.classList.toggle("is-hidden")
 }
